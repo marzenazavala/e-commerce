@@ -4,6 +4,8 @@ import './header.scss'
 import {ReactComponent as Logo} from '../../assets/logo.svg';
 import {auth} from '../../firebase/firebase.utils';
 import {connect} from 'react-redux';
+import CartIcon from '../cart-icon/CartIcon';
+import CartDropdown from '../cart-dropdown/CartDropdown';
 
 
 const Header = ({currentUser}) => {
@@ -15,15 +17,17 @@ const Header = ({currentUser}) => {
                 <Logo className="logo" />
             </Link>
             <div className="options">
-                <Link className="option" to="/shop">SHOP</Link>
-                <Link className="option" to="/contact">CONTACT</Link>
+                <Link className="option" to="/shop">shop</Link>
+                <Link className="option" to="/contact">contact</Link>
                 {
                     currentUser ? 
-                    <div className="option" onClick={() => auth.signOut()}>SIGN OUT</div>
+                    <div className="option" onClick={() => auth.signOut()}>sign out</div>
                     : 
-                    <Link className="option" to="/signin">SIGN IN</Link>
+                    <Link className="option" to="/signin">sign in</Link>
                 }
+                <CartIcon />
             </div>
+            <CartDropdown />
         </div>
     )
 }
