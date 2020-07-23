@@ -11,6 +11,7 @@ import {connect} from 'react-redux';
 import {setCurrentUser} from './redux/user/userActions';
 import {selectCurrentUser} from './redux/user/userSelectors';
 import {createStructuredSelector} from 'reselect';
+import CollectionPage from './pages/collection/Collection';
 
 
 class App extends Component {
@@ -50,6 +51,7 @@ componentWillUnmount() {
         <Switch>
           <Route exact path='/' component={HomePage}/>
           <Route exact path='/shop' component={ShopPage}/>
+          <Route path='/shop/:collectionId' component={CollectionPage} />
           <Route exact path='/checkout' component={CheckoutPage}/>
           <Route exact path='/signin' 
           render={()=> this.props.currentUser ? 
