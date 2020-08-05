@@ -6,22 +6,21 @@ import ShopPage from './pages/shopPage/ShopPage';
 import Header from './components/header/Header';
 import SignInSignUp from './pages/signIn-signUp/SigninSignUp';
 import CheckoutPage from './pages/checkout/Checkout';
-import {auth, createUserProfileDocument} from './firebase/firebase.utils';
+import {auth, createUserProfileDocument, addCollectionAndDocuments} from './firebase/firebase.utils';
 import {connect} from 'react-redux';
 import {setCurrentUser} from './redux/user/userActions';
 import {selectCurrentUser} from './redux/user/userSelectors';
 import {createStructuredSelector} from 'reselect';
-import CollectionPage from './pages/collection/Collection';
+import {selectCollectionsForPreview} from './redux/shop/shopSelectors';
 
 
 class App extends Component {
 
+
 unsubscribeFromAuth = null
 
-
 componentDidMount() {
-
-  const {setCurrentUser} = this.props;
+  const {setCurrentUser, collectionsArray} = this.props;
   this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
     if(userAuth) {
 
@@ -35,8 +34,8 @@ componentDidMount() {
         })
       };
        
-    
-      setCurrentUser(userAuth)
+      setCurrentUser(userAuth);
+      //addCollectionAndDocuments('collections', collectionsArray.map(({title, items})=>({title, items})));
   })
 };
 
@@ -50,18 +49,11 @@ componentWillUnmount() {
         <Header />
         <Switch>
           <Route exact path='/' component={HomePage}/>
-          <Route exact path='/shop' component={ShopPage}/>
-          <Route path='/shop/:collectionId' component={CollectionPage} />
+          <Route path='/shop' component={ShopPage}/>
           <Route exact path='/checkout' component={CheckoutPage}/>
           <Route exact path='/signin' 
           render={()=> this.props.currentUser ? 
           (<Redirect to='/'/>) : (<SignInSignUp/>)}/>
-          <Route exact path='/tables' component={HomePage}/>
-          <Route exact path='/sofas' component={HomePage}/>
-          <Route exact path='/chairs' component={HomePage}/>
-          <Route exact path='/home' component={HomePage}/>
-          <Route exact path='/garden' component={HomePage}/>
-  
         </Switch>
       </div>
     );
@@ -72,11 +64,13 @@ componentWillUnmount() {
 }
 
 const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
+  currentUser: selectCurrentUser,
+  //collectionsArray: selectCollectionsForPreview
 })
 
 const mapDispatchToProps = dispatch =>({
     setCurrentUser: user => dispatch(setCurrentUser(user))
+    
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);
