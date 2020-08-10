@@ -2,8 +2,6 @@ import React from 'react';
 import CollectionItem from '../../components/collectionItem/CollectionItem';
 import {connect} from 'react-redux';
 import {selectCollection} from '../../redux/shop/shopSelectors';
-
-
 import {
     CollectionPageContainer,
     CollectionTitle,
