@@ -8,7 +8,6 @@ import SignInSignUp from './pages/signIn-signUp/SigninSignUp';
 import CheckoutPage from './pages/checkout/Checkout';
 import {auth, createUserProfileDocument, addCollectionAndDocuments} from './firebase/firebase.utils';
 import {connect} from 'react-redux';
-import {setCurrentUser} from './redux/user/userActions';
 import {selectCurrentUser} from './redux/user/userSelectors';
 import {createStructuredSelector} from 'reselect';
 import {selectCollectionsForPreview} from './redux/shop/shopSelectors';
@@ -20,23 +19,23 @@ class App extends Component {
 unsubscribeFromAuth = null
 
 componentDidMount() {
-  const {setCurrentUser, collectionsArray} = this.props;
-  this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
-    if(userAuth) {
+ 
+  // this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+  //   if(userAuth) {
 
-      const userRef = await createUserProfileDocument(userAuth)
+  //     const userRef = await createUserProfileDocument(userAuth)
 
-      userRef.onSnapshot(snapShot => {
-        setCurrentUser({
-            id: snapShot.id,
-            ...snapShot.data()
-          })
-        })
-      };
+  //     userRef.onSnapshot(snapShot => {
+  //       setCurrentUser({
+  //           id: snapShot.id,
+  //           ...snapShot.data()
+  //         })
+  //       })
+  //     };
        
-      setCurrentUser(userAuth);
-      //addCollectionAndDocuments('collections', collectionsArray.map(({title, items})=>({title, items})));
-  })
+  //     setCurrentUser(userAuth);
+  //     //addCollectionAndDocuments('collections', collectionsArray.map(({title, items})=>({title, items})));
+  // })
 };
 
 componentWillUnmount() {
@@ -65,12 +64,6 @@ componentWillUnmount() {
 
 const mapStateToProps = createStructuredSelector({
   currentUser: selectCurrentUser,
-  //collectionsArray: selectCollectionsForPreview
-})
+});
 
-const mapDispatchToProps = dispatch =>({
-    setCurrentUser: user => dispatch(setCurrentUser(user))
-    
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default connect(mapStateToProps)(App);

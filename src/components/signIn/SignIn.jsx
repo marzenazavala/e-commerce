@@ -1,46 +1,36 @@
-import React, {Component} from  "react";
+import React, {Component} from  'react';
+import {connect} from 'react-redux';
 import './signIn.scss';
-import FormInput from "../formInput/FormInput";
-import CustomButton from "../button/CustomButton";
-
-import {auth, signInWithGoogle} from "../../firebase/firebase.utils"
+import FormInput from '../formInput/FormInput';
+import CustomButton from '../button/CustomButton';
+import {googleSignInStart, emailSignInStart} from '../../redux/user/userActions';
 
 class SignIn extends Component {
 constructor(props){
     super(props);
 
-    this.state={
+    this.state = {
         email: '',
         password: ''
     }
-
-
-}
-
+};
 
 handleSubmit = async event => {
     event.preventDefault();
-
+    const {emailSignInStart} = this.props;
     const {email, password} = this.state;
 
-    try {
-        await auth.signInWithEmailAndPassword(email, password);
-        this.setState({email:'', password:''})
+    emailSignInStart(email, password);
 
-    } catch (error) {
-        console.log(error)
-    }
-
-    
-}
+};
 
 handleChange = (e) => {
     const {value, name} = e.target;
     this.setState({[name]: value})
-}
+};
 
 render () {
-
+    const {googleSignInStart} = this.props;
     const {email, password} = this.state;
 
     return(
@@ -67,14 +57,16 @@ render () {
 
                 <div className="buttons">
                     <CustomButton type="submit">log in</CustomButton>
-                    <CustomButton onClick={signInWithGoogle} type="button" isGoogleSignIn >log in with Google</CustomButton>
+                    <CustomButton onClick={googleSignInStart} type="button" isGoogleSignIn >log in with Google</CustomButton>
                 </div>
             </form>
         </div>
-    )
-}
+    )}
+};
 
+const mapDispatchToProps = dispatch => ({
+    googleSignInStart: () => dispatch(googleSignInStart()),
+    emailSignInStart: (email, password) => dispatch(emailSignInStart({email, password}))
+})
 
-}
-
-export default SignIn
+export default connect(null, mapDispatchToProps)(SignIn)

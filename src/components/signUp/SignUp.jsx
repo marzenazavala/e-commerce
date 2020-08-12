@@ -40,7 +40,7 @@ class SignUp extends Component {
                 confirmPassword: ''
             })
 
-        } catch (error) {
+        } catch(error) {
             console.error(error)
         }
     };
