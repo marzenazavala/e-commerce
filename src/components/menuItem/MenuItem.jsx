@@ -13,7 +13,7 @@ const MenuItem = ({title, imageUrl, size, linkUrl, history, match}) => {
                         <h1 className="title">{title}</h1>
                         <span className="subtitle">buy now</span>
                     </div>
-                </div>
+            </div>
 
     )
 }

@@ -21,10 +21,7 @@
             opacity: 0.9;
         }
     }
-    
-    
-    
-   
+
 
     &.large {
         height: 380px;
@@ -56,6 +53,7 @@
       background-color: white;
       opacity: 0.7;
       position: absolute;
+      margin: auto;
   
       .title {
         font-weight: bold;

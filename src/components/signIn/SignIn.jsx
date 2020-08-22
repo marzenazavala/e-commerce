@@ -1,47 +1,34 @@
-import React, {Component} from  'react';
+import React, {useState} from  'react';
 import {connect} from 'react-redux';
 import './signIn.scss';
 import FormInput from '../formInput/FormInput';
 import CustomButton from '../button/CustomButton';
 import {googleSignInStart, emailSignInStart} from '../../redux/user/userActions';
 
-class SignIn extends Component {
-constructor(props){
-    super(props);
+const SignIn = ({emailSignInStart, googleSignInStart}) => {
 
-    this.state = {
-        email: '',
-        password: ''
-    }
-};
+    const [userCredentials, setCredentials] = useState({email: '', password: ''});
+    const {email, password} = userCredentials;
 
-handleSubmit = async event => {
+const handleSubmit = async event => {
     event.preventDefault();
-    const {emailSignInStart} = this.props;
-    const {email, password} = this.state;
-
     emailSignInStart(email, password);
-
 };
 
-handleChange = (e) => {
+const handleChange = (e) => {
     const {value, name} = e.target;
-    this.setState({[name]: value})
+    setCredentials({...userCredentials, [name]: value})
 };
-
-render () {
-    const {googleSignInStart} = this.props;
-    const {email, password} = this.state;
 
     return(
         <div className="sign-in">
             <h2 className='title'>I already have an account</h2>
             <span>Sign in with your email and password</span>
-            <form onSubmit={this.handleSubmit}>
+            <form onSubmit={handleSubmit}>
                 <FormInput 
                     name="email" 
                     type="email" 
-                    onChange={this.handleChange}
+                    onChange={handleChange}
                     value={email} 
                     label='Email'
                     required />
@@ -50,7 +37,7 @@ render () {
                     name="password" 
                     type="password" 
                     value={password} 
-                    onChange={this.handleChange}
+                    onChange={handleChange}
                     label='Password'
                     required />
                
@@ -61,7 +48,7 @@ render () {
                 </div>
             </form>
         </div>
-    )}
+    )
 };
 
 const mapDispatchToProps = dispatch => ({
