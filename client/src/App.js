@@ -7,6 +7,7 @@ import {selectCurrentUser} from './redux/user/userSelectors';
 import {createStructuredSelector} from 'reselect';
 import {checkUserSession} from './redux/user/userActions';
 import Spinner from './components/spinner/Spinner';
+import ErrorBoundary from './components/error-boundary/ErrorBoundary';
 
 const HomePage = lazy(()=>import('./pages/homePage/HomePage'))
 const ShopPage = lazy(()=>import('./pages/shopPage/ShopPage'))
@@ -24,14 +25,16 @@ useEffect(()=>{
         <GlobalStyle/>
         <Header />
         <Switch>
-          <Suspense fallback={<Spinner />}>
-            <Route exact path='/' component={HomePage}/>
-            <Route path='/shop' component={ShopPage}/>
-            <Route exact path='/checkout' component={CheckoutPage}/>
-            <Route exact path='/signin' 
-            render={()=> currentUser ? 
-            (<Redirect to='/'/>) : (<SignInSignUp/>)}/>
-          </Suspense>
+        <ErrorBoundary>
+            <Suspense fallback={<Spinner />}>
+              <Route exact path='/' component={HomePage}/>
+              <Route path='/shop' component={ShopPage}/>
+              <Route exact path='/checkout' component={CheckoutPage}/>
+              <Route exact path='/signin' 
+                render={()=> currentUser ? 
+                (<Redirect to='/'/>) : (<SignInSignUp/>)}/>
+            </Suspense>
+          </ErrorBoundary>
         </Switch>
       </div>
     );
